@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>會員登入 / 註冊</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .form-box {
+      background: #fff;
+      padding: 30px;
+      margin: 20px auto;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #ff8c42;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e3732c;
+    }
+  </style>
+</head>
+<body>
+  <h1>會員登入 / 註冊</h1>
+
+  <div class="form-box">
+    <h2>註冊</h2>
+    <input type="text" id="register-username" placeholder="帳號">
+    <input type="password" id="register-password" placeholder="密碼">
+    <button onclick="register()">註冊</button>
+  </div>
+
+  <div class="form-box">
+    <h2>登入</h2>
+    <input type="text" id="login-username" placeholder="帳號">
+    <input type="password" id="login-password" placeholder="密碼">
+    <button onclick="login()">登入</button>
+  </div>
+
+  <script>
+    async function register() {
+      const username = document.getElementById("register-username").value;
+      const password = document.getElementById("register-password").value;
+
+      const res = await fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const text = await res.text();
+      alert(text);
+    }
+
+    async function login() {
+      const username = document.getElementById("login-username").value;
+      const password = document.getElementById("login-password").value;
+
+      const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+  const data = await res.json();
+  alert(data.msg);
+
+  //儲存登入狀態
+  localStorage.setItem("loggedIn","true");
+  // 儲存角色（非常重要）
+  localStorage.setItem("userId", data.userId);
+  localStorage.setItem("role",data.role)
+
+  // 依照角色跳轉
+  if (data.role === "admin") {
+    window.location.href = "admin.html";  // 管理員後台
+  } else {
+    window.location.href = "index.html";  // 一般使用者首頁
+  }
+}
+    
+  </script>
+</body>
+</html>

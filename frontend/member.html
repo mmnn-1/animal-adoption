@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>會員專區</title>
+    <style>
+        body{
+            font-family: 'Segoe UI',sans-serif;
+            background: #fff4ec;
+            margin: 0;
+        }
+        .container{
+            max-width: 1000px;
+            margin: auto;
+            padding: 30px;
+        }
+        .profile{
+            background:white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0,1);
+        }
+        .adoption-list{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap:20px;
+        }
+        .adoption-card{
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .adoption-card img{
+            width: 150px;
+            height:150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <h2>👤我的會員檔案</h2>
+            <p>歡迎回來!以下是你領養的浪浪</p>
+
+        </div>
+        <div id = "my-adoptions" class="adoption-list"></div>
+    </div>
+    <script>
+        const userId = localStorage.getItem("userId");
+        fetch(`http://localhost:3000/my-adoptions?user_id=${userId}`)
+        .then(res=>res.json())
+        .then(data=>{
+           const list = document.getElementById("my-adoptions");
+           if(data.length==0){
+            list.innerHTML = "<p>目前沒有領養任何浪浪</p>";
+            return;
+           }
+           data.forEach(a=>{
+            const card = document.createElement("div");
+            card.className = "adoption-card";
+            card.innerHTML  =`
+            <img src="http://localhost:3000${a.image_url}">
+            <h3>${a.breed}(${a.type})</h3>
+            <p>"已成功領養"</p>
+            `;
+            list.appendChild(card)
+           });
+        });
+
+    </script>
+</body>
+</html>
+
+
+

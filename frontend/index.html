@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>流浪動物收養平台</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ef844093;
+    }
+
+    nav {
+      background-color: #ff8c42;
+      padding: 15px 0;
+      text-align: left;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline-block;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      color: #333;
+    }
+
+    #animal-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .animal-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .animal-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .animal-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 10px;
+      background-color: #ff8c42;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e6722c;
+    }
+     #news-section {
+      padding: 30px 20px;
+    }
+
+    .scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 10px 0;
+      scroll-snap-type: x mandatory;
+    }
+
+    .scroll-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .scroll-container::-webkit-scrollbar-thumb {
+      background: #ff8c42;
+      border-radius: 5px;
+    }
+
+    .news-card {
+      min-width: 250px;
+      flex-shrink: 0;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      scroll-snap-align: start;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .news-card:hover {
+      transform: scale(1.03);
+    }
+    .marquee-container{
+      width:100%;
+      overflow:hidden;
+      background-color: #fff8f4;
+      padding: 10px 0;
+    }
+    .marquee{
+      display: inline-block;
+      white-space: nowrap;
+      color:#d35400;
+      font-weight: bold;
+      font-size: 18px;
+      animation: scroll-left 15s linear infinite;
+    }
+    @keyframes scroll-left{
+      0%{
+        transform: translateX(100%);
+      }
+      100% {
+    transform: translateX(-100%);
+  }
+    }
+  </style>
+</head>
+<body>
+  <!-- 導覽列 -->
+  <nav>
+    <ul>
+      <li><a href="#" onclick="toggleNews()">最新消息</a></li>
+      <li><a href="#">關於我們</a></li>
+      <li><a href="#">浪浪據點</a></li>
+      <li><a href="#" onclick="goToLogin()">會員登入</a></li>
+      <li><a href="#" onclick="goToMember()">會員專區</a></li>
+      <li><a href="#" id="logout-btn" style="display:none;" onclick="logout()">登出</a></li>
+    </ul>
+  </nav>
+  
+  <div class="marquee-container">
+  <div class="marquee">🐾 歡迎收養浪浪！今天有 5 隻等待認養中～ 📍 新增新竹據點 ☀️ 夏季領養活動開跑！</div>
+</div>
+   <!-- 跑馬燈區塊 -->
+ 
+  <h1>目前有這些可愛的浪浪等待領養！</h1>
+   <!-- 最新消息區塊（初始隱藏） -->
+  <div id="news-section" style="display:none;">
+    <h2>📢 最新消息</h2>
+    <div id="news-container" class="scroll-container">
+      <!-- 動態插入 -->
+    </div>
+  </div>
+
+  <div id="animal-list"></div>
+
+  <script>
+  
+ async function loadAnimals() {
+  const res = await fetch("http://localhost:3000/animals");
+  const animals = await res.json();
+
+  const list = document.getElementById("animal-list");
+  list.innerHTML = ""; // 清空原本內容
+  animals.forEach(a => {
+    const item = document.createElement("div");
+    item.className = "animal-card";
+    item.innerHTML = `
+      <img src="http://localhost:3000${a.image_url}" alt="${a.breed}">
+
+      <h3>${a.breed} (${a.type})</h3>
+      <p>年齡：${a.age}</p>
+      <p>性別：${a.gender}</p>
+      <p>每月費用：${a.monthly_cost}</p>
+      <button onclick ="adopt(${a.id},'${a.breed}')">領養我</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+loadAnimals();
+
+
+
+    function goToLogin() {
+  window.location.href = "login.html";
+  }
+
+    function adopt(animalId, breed) {
+  // 1. 檢查是否登入
+  if (localStorage.getItem("loggedIn") !== "true") {
+    alert("請先登入才能領養！");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userId = localStorage.getItem("userId");
+
+  // 2. 呼叫後端 API
+  fetch("http://localhost:3000/adopt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      user_id: userId,
+      animal_id: animalId
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(`你已成功領養 ${breed}！感謝你的愛心 💖`);
+
+    // 3. 前端移除卡片
+    document.querySelectorAll(".animal-card").forEach(card => {
+      if (card.innerHTML.includes(breed)) {
+        card.remove();
+      }
+    });
+  });
+}
+
+
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      alert("您已登出");
+      window.location.href = "index.html";
+    }
+
+    function goToMember() {
+      if (localStorage.getItem("loggedIn") === "true") {
+        alert("歡迎進入會員專區！");
+         window.location.href = "member.html";
+      } else {
+        alert("請先登入才能進入會員專區！");
+        window.location.href = "login.html";
+      }
+    }
+
+    // 登出按鈕顯示控制
+    if (localStorage.getItem("loggedIn") === "true") {
+      document.getElementById("logout-btn").style.display = "inline-block";
+    }
+     
+      const newsList = [
+        "🐶 本週有 5 隻新浪浪等待領養！",
+        "📍 新增新竹浪浪據點，歡迎探訪！",
+        "",
+        "⚠️ 6 月 1 日起開放線上領養預約",
+        "❤️ 感謝志工們長期付出"
+     ];
+      let newsRendered = false;
+  function toggleNews() {
+  const section = document.getElementById("news-section");
+  const container = document.getElementById("news-container");
+
+  if (section.style.display === "none" || section.style.display === "") {
+    section.style.display = "block";
+
+    if (!newsRendered) {
+      container.innerHTML = ""; // 清空舊內容
+
+      newsList.forEach(msg => {
+        const card = document.createElement("div");
+        card.className = "news-card";
+        card.innerHTML = msg.trim() !== ""
+          ? `<p>${msg}</p>`
+          : `<p style="color:#aaa; font-style:italic;">（這是一則無文字的消息）</p>`;
+        container.appendChild(card);
+      });
+
+      newsRendered = true;
+    }
+
+    window.scrollTo({ top: section.offsetTop - 20, behavior: "smooth" });
+  } else {
+    section.style.display = "none";
+  }
+}
+
+  </script>
+</body>
+</html>
