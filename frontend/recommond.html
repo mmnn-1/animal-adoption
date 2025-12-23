@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang = "zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <title>適合你的動物推薦</title>
+        <link rel ="stylesheet"href="recommend.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>🐾適合你的寵物推薦</h1>
+            <p class="subtitle">回答以下問題，我會推薦適合你的動物</p>
+            <form id="recommendForm">
+                <!--基本條件-->
+                <section>
+                    <h2>基本條件</h2>
+
+                    <label>想領養的類型</label>
+                    <select name="type"required>
+                        <option value="">請選擇</option>
+                        <option value="dog">狗</option>
+                        <option value="cat">貓</option>
+                    </select>
+                    <label>每個月可以接受的花費</label>
+                    <select name="avg_monthly_cost">
+                        <option value="3000">3000以下</option>
+                        <option value="6000">3000-6000</option>
+                        <option value="10000">6000以上</option>
+                    </select>
+                </section>
+                <!--生活習慣-->
+                <section>
+                    <h2>生活習慣</h2>
+                    <label>每天可陪伴運動的時間</label>
+                    <select name="activity_level">
+                        <option value="low">少</option>
+                        <option value="medium">中等</option>
+                        <option value="high">多</option>
+                    </select>
+                    <label>居住空間</label>
+                    <select name="space_requirement">
+                        <option value="low">套房/小公寓</option>
+                        <option value="medium">一般住宅</option>
+                        <option value="high">大空間/有庭院</option>
+                    </select>
+                    <label>對吵鬧的接受度</label>
+                    <select name="noice_level">
+                        <option value="low">很怕吵</option>
+                        <option value="medium">普通</option>
+                        <option value="high">不介意</option>
+                    </select>
+                </section>
+                <!--照顧程度-->
+                <section>
+                    <h2>照顧與整理</h2>
+                    <label>整理毛髮接受度</label>
+                    <select name="shedding_level">
+                        <option value="low">不太能</option>
+                        <option value="medium">可以</option>
+                        <option value="high">不太能</option>
+                    </select>
+                    <label>每天能投入照顧時間</label>
+                    <select name="time_commitment">
+                        <option value="low">很少</option>
+                        <option value="medium">普通</option>
+                        <option value="high">很多</option>
+                    </select>
+                    <label>是否第一次養寵物</label>
+                    <select name="suitable_for">
+                        <option value = "beginner">是</option>
+                        <option value = "experienced">否</option>
+                    </select>
+                </section>
+                  <!-- 個性偏好 -->
+    <section>
+      <h2>偏好個性（可複選）</h2>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="traits" value="friendly"> 親人</label>
+        <label><input type="checkbox" name="traits" value="active"> 活潑</label>
+        <label><input type="checkbox" name="traits" value="clam"> 安靜</label>
+        <label><input type="checkbox" name="traits" value="good_with_kids"> 適合小孩</label>
+        <label><input type="checkbox" name="traits" value="low_barking"> 不愛叫</label>
+      </div>
+    </section>
+    <button type="submit">開始推薦</button>
+            </form>
+        </div>
+    </body>
+</html>
