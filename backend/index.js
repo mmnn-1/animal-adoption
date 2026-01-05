@@ -146,6 +146,40 @@ app.get("/my-adoptions",(req,res)=>{
   res.json(rows);
 });
 });
+//推薦系統分數計算
+app.post("/api/recommend",(req,res)=>{
+  console.log("收到推薦請求：", req.body);
+  const levelMap = {
+    low:1,
+    medium:2,
+    high:3
+  };
+  const user = req.body;
+  db.query(
+    "SELECT * FROM animal_profiles WHERE type=?",
+    [user.type],
+    (err,profiles)=>{
+      if(err)return res.status(500).json(err);
+      const result = profiles.map(p=>{
+        let score=0;
+        if(p.avg_monthly_cost!=0 && p.avg_monthly_cost<=user.avg_monthly_cost)score+=2;
+        if(p.activity_level===user.activity_level)score+=2;
+        
+        if(levelMap[p.grooming_level]<=levelMap[user.grooming_level])score+=1;
+        if(levelMap[p.space_requirement]<=levelMap[user.space_requirement])score+=2;
+        if(levelMap[p.noice_level]<=levelMap[user.noice_level])score+=1;
+        if(levelMap[p.time_commitment]<=levelMap[user.time_commitment])score+=2;
+        if(levelMap[p.shedding_level]<=levelMap[user.shedding_level])score+=1;
+        if(p.suitable_for===user.suitable_for)score+=2;
+
+        return {...p,score}
+
+      });
+      result.sort((a,b)=>b.score - a.score);
+      res.json(result.slice(0,3));
+    }
+  );
+});
 app.listen(port, () => {
   console.log(`後端服務啟動：http://localhost:${port}`);
 });

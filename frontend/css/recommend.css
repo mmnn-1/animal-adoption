@@ -1,0 +1,69 @@
+*{
+    box-sizing: border-box;
+    font-family: "Noto Sans TC",sans-serif;
+}
+body{
+    background: #f6f7fb;
+    margin: 0;
+    padding: 40px 0;
+}
+.container{
+    width: 90%;
+    max-width: 720px;
+    background: #fff;
+    margin: auto;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+h1{
+    text-align: center;
+    margin-bottom: 10px;
+}
+.subtitle{
+    text-align: center;
+    color:#666;
+    margin-bottom: 30px;
+}
+section{
+    margin-bottom:30px;
+}
+h2{
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-left: 4px solid #5b7cfa;
+    padding-left: 10px;
+}
+label{
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+select{
+    width: 100%;
+    padding:10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border:1px solid #ccc;
+}
+.checkbox-group{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap:10px;
+}
+.checkbox-group label{
+    font-weight: normal;
+}
+button{
+    width:100%;
+    padding: 14px;
+    font-size: 16px;
+    background: #5b7cfa;
+    color:white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+button:hover{
+    background: #4866eb;
+}

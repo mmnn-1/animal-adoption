@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>適合你的動物推薦</title>
-        <link rel ="stylesheet"href="recommend.css">
+        <link rel ="stylesheet"href="./css/recommend.css">
+      
     </head>
     <body>
 
@@ -85,6 +86,13 @@
     </section>
     <button type="submit">開始推薦</button>
             </form>
+            <!--推薦結果放在這裡-->
+            <div id="resultSection"class="result-section"style="display:none;">
+                <h2>🐶 為你推薦的寵物</h2>
+                <div id="resultList"class="result-list"></div>
+
+            </div>
         </div>
+          <script src="./js/recommend.js"></script>
     </body>
 </html>
